@@ -23,11 +23,11 @@ namespace ListFolders
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.ReadLine();
             }
             finally
             {
-                Console.WriteLine("Press <Enter> to exit.");
-                Console.ReadLine();
+                //Console.WriteLine("Press <Enter> to exit.");
             }
         }
 
