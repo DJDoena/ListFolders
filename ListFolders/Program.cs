@@ -1,89 +1,83 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
-namespace ListFolders
+try
 {
-    internal static class Program
+    if (args?.Length == 3)
     {
-        internal static void Main(string[] args)
+        Scan(new DirectoryInfo(args[0]), args[1], args[2]);
+    }
+    else
+    {
+        Console.WriteLine("Missing arguments.");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.ReadLine();
+}
+finally
+{
+    //Console.WriteLine("Press <Enter> to exit.");
+}
+
+void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
+{
+    var searchPatternList = searchPatterns.Split(',');
+
+    var files = searchPatternList
+        .SelectMany(p => folder.GetFiles(p, SearchOption.AllDirectories));
+
+    var uniqueFolders = files
+        .Select(f => f.Directory)
+        .Select(GetFolderName)
+        .Distinct()
+        .OrderBy(f => f);
+
+    var outputFile = new FileInfo(Path.Combine(folder.FullName, outputFileName));
+
+    Backup($"{outputFile.FullName}.old", $"{outputFile.FullName}.old.old");
+    Backup(outputFile.FullName, $"{outputFile.FullName}.old");
+
+    using var sw = new StreamWriter(outputFile.FullName, false, Encoding.UTF8);
+
+    foreach (var uniqueFolder in uniqueFolders)
+    {
+        var line = uniqueFolder.Substring(folder.FullName.Length + 1);
+
+        sw.WriteLine(line);
+    }
+}
+
+void Backup(string sourceFileName, string targetFileName)
+{
+    if (File.Exists(sourceFileName))
+    {
+        if (File.Exists(targetFileName))
         {
-            try
-            {
-                if (args?.Length == 3)
-                {
-                    Scan(new DirectoryInfo(args[0]), args[1], args[2]);
-                }
-                else
-                {
-                    Console.WriteLine("Missing arguments.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.ReadLine();
-            }
-            finally
-            {
-                //Console.WriteLine("Press <Enter> to exit.");
-            }
+            File.Delete(targetFileName);
         }
 
-        private static void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
-        {
-            var searchPatternList = searchPatterns.Split(',');
+        File.Move(sourceFileName, targetFileName);
+    }
+}
 
-            var files = searchPatternList.SelectMany(p => folder.GetFiles(p, SearchOption.AllDirectories));
-
-            var uniqueFolders = files.Select(f => f.Directory).Select(GetFolderName).Distinct().OrderBy(f => f);
-
-            var outputFile = new FileInfo(Path.Combine(folder.FullName, outputFileName));
-
-            var oldFile = new FileInfo(outputFile.FullName + ".old");
-
-            if (oldFile.Exists)
-            {
-                oldFile.Delete();
-            }
-
-            if (outputFile.Exists)
-            {
-                outputFile.MoveTo(outputFile.FullName + ".old");
-
-                outputFile = new FileInfo(Path.Combine(folder.FullName, outputFileName));
-            }
-
-            using (var sw = new StreamWriter(outputFile.FullName, false, Encoding.UTF8))
-            {
-                foreach (var uniqueFolder in uniqueFolders)
-                {
-                    var line = uniqueFolder.Substring(folder.FullName.Length + 1);
-
-                    sw.WriteLine(line);
-                }
-            }
-        }
-
-        private static string GetFolderName(DirectoryInfo folder)
-        {
-            if (folder.Name.StartsWith("cd", StringComparison.OrdinalIgnoreCase))
-            {
-                return folder.Parent.FullName;
-            }
-            else if (folder.Name.StartsWith("part", StringComparison.OrdinalIgnoreCase))
-            {
-                return folder.Parent.FullName;
-            }
-            else if (folder.Name.StartsWith("disc", StringComparison.OrdinalIgnoreCase))
-            {
-                return folder.Parent.FullName;
-            }
-            else
-            {
-                return folder.FullName;
-            }
-        }
+string GetFolderName(DirectoryInfo folder)
+{
+    if (folder.Name.StartsWith("cd", StringComparison.OrdinalIgnoreCase))
+    {
+        return folder.Parent.FullName;
+    }
+    else if (folder.Name.StartsWith("part", StringComparison.OrdinalIgnoreCase))
+    {
+        return folder.Parent.FullName;
+    }
+    else if (folder.Name.StartsWith("disc", StringComparison.OrdinalIgnoreCase))
+    {
+        return folder.Parent.FullName;
+    }
+    else
+    {
+        return folder.FullName;
     }
 }
