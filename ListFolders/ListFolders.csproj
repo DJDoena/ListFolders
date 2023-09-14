@@ -9,6 +9,8 @@
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>x64</Platforms>
 		<ImplicitUsings>true</ImplicitUsings>
+		<Version>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</Version>
+		<FileVersion>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</FileVersion>
 	</PropertyGroup>
 
 </Project>
