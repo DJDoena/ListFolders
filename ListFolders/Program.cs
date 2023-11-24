@@ -34,7 +34,8 @@ void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
         .Select(f => f.Directory)
         .Select(GetFolderName)
         .Distinct()
-        .OrderBy(f => f);
+        .OrderBy(f => f)
+        .ToList();
 
     var lines = new List<string[]>();
 
@@ -101,7 +102,7 @@ static void WriteFile(DirectoryInfo folder, string outputFileName, List<string[]
 
     Backup(outputFile.FullName, $"{outputFile.FullName}.old");
 
-    var sw = new StreamWriter(outputFile.FullName, false, Encoding.UTF8);
+    using var sw = new StreamWriter(outputFile.FullName, false, Encoding.UTF8);
 
     foreach (var lineParts in lines)
     {
