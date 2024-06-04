@@ -33,6 +33,7 @@ void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
     var uniqueFolderNames = files
         .Select(f => f.Directory)
         .Select(GetFolderName)
+        .Where(f => f != folder.FullName)
         .Distinct()
         .OrderBy(f => f)
         .ToList();
