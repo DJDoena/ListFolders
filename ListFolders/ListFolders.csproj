@@ -11,6 +11,13 @@
 		<ImplicitUsings>true</ImplicitUsings>
 		<Version>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</Version>
 		<FileVersion>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</FileVersion>
+		<ApplicationIcon>djdsoft.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Update="RootItem.NotGenerated.cs">
+			<DependentUpon>RootItem.xsd</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
 </Project>
