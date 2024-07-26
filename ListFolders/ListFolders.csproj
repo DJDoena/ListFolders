@@ -4,7 +4,7 @@
 		<Configurations>Debug</Configurations>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>ListFolders</RootNamespace>
+		<RootNamespace>DoenaSoft.ListFolders</RootNamespace>
 		<AssemblyName>ListFolders</AssemblyName>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>x64</Platforms>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="RootItem" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
-	<!-- xsd.exe  RootItem.xsd /c /l:cs /f /n:ListFolders -->
+	<!-- xsd.exe RootItem.xsd /c /l:cs /f /n:ListFolders -->
 	
 	<xs:element name="RootItem" type="RootItem" />
 
@@ -13,6 +13,7 @@
 	<xs:complexType name="SubItem">
 		<xs:sequence>
 			<xs:element name="Item" type="SubItem" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="FullPath" type="xs:string" minOccurs="0" maxOccurs="1" />
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 	</xs:complexType>

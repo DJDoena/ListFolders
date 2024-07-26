@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace ListFolders;
+namespace DoenaSoft.ListFolders.Xml;
 
 [DebuggerDisplay("{Name}")]
 public partial class SubItem
