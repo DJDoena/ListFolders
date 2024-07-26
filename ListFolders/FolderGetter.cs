@@ -20,8 +20,6 @@ internal static class FolderGetter
         return folderNames;
     }
 
-
-
     private static string GetFolderName(DirectoryInfo folder)
     {
         if (folder.Name.StartsWith("cd", StringComparison.OrdinalIgnoreCase))
