@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Configurations>Debug</Configurations>
+		<AssemblyName>ListFolders</AssemblyName>
+		<RootNamespace>DoenaSoft.ListFolders</RootNamespace>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>DoenaSoft.ListFolders</RootNamespace>
-		<AssemblyName>ListFolders</AssemblyName>
-		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>x64</Platforms>
+		<Configurations>Debug</Configurations>
+		<ApplicationIcon>djdsoft.ico</ApplicationIcon>
 		<ImplicitUsings>true</ImplicitUsings>
 		<Version>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</Version>
 		<FileVersion>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</FileVersion>
-		<ApplicationIcon>djdsoft.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
