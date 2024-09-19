@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using DoenaSoft.ListFolders;
 
-Console.WriteLine($"v{Assembly.GetExecutingAssembly().GetName().Version}");
+Console.WriteLine($"ListFolders - v{Assembly.GetExecutingAssembly().GetName().Version}");
 
 try
 {
@@ -26,11 +26,13 @@ finally
 
 static void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
 {
+    Console.WriteLine($"Listing '{folder.FullName}' ('{searchPatterns}') to '{outputFileName}'");
+
     var folderNames = FolderGetter.Get(folder, searchPatterns);
 
     var rootItem = XmlCreator.Create(folder, folderNames);
 
-    Cleaner.Clean(rootItem);
-
+    Cleaner.Clean(rootItem);    
+    
     Serializer.Serialize(folder, outputFileName, rootItem);
 }
