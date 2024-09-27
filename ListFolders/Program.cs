@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using DoenaSoft.ListFolders;
 
-Console.WriteLine($"ListFolders - v{Assembly.GetExecutingAssembly().GetName().Version}");
+Console.WriteLine($"ListFolders v{Assembly.GetExecutingAssembly().GetName().Version}");
 
 try
 {
