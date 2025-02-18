@@ -38,12 +38,20 @@ namespace DoenaSoft.ListFolders.Xml {
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Item")]
         public List<SubItem> Item;
-        
+
         /// <remarks/>
         public string FullPath;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(Form=System.Xml.Schema.XmlSchemaForm.Qualified)]
         public string Name;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(Form=System.Xml.Schema.XmlSchemaForm.Qualified)]
+        public System.DateTime LastWriteTime;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LastWriteTimeSpecified;
     }
 }

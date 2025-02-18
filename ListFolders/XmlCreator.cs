@@ -1,36 +1,43 @@
-﻿using DoenaSoft.ListFolders.Xml;
+﻿using DoenaSoft.AbstractionLayer.IOServices;
+using DoenaSoft.ListFolders.Xml;
 
 namespace DoenaSoft.ListFolders;
 
 internal static class XmlCreator
 {
-    internal static RootItem Create(DirectoryInfo folder, List<string> folderNames)
+    internal static RootItem Create(IFolderInfo folder, List<FolderData> folderDatas)
     {
         var rootItem = new RootItem()
         {
             Item = [],
         };
 
-        foreach (var folderName in folderNames)
+        foreach (var folderData in folderDatas)
         {
-            ProcessRoot(rootItem, folderName, folder.FullName.Length);
+            ProcessRoot(rootItem, folderData, folder.FullName.Length);
         }
 
         return rootItem;
     }
 
-    private static void ProcessRoot(RootItem rootItem, string folderName, int fullNameLength)
+    private static void ProcessRoot(RootItem rootItem
+        , FolderData folderData
+        , int fullNameLength)
     {
-        var line = folderName[(fullNameLength + 1)..];
+        var line = folderData.Folder.FullName[(fullNameLength + 1)..];
 
-        var rootFolder = folderName[..fullNameLength];
+        var rootFolder = folderData.Folder.FullName[..fullNameLength];
 
         var lineParts = line.Split('\\');
 
-        ProcessSegment(lineParts, 0, rootItem.Item, rootFolder);
+        ProcessSegment(lineParts, 0, rootItem.Item, rootFolder, folderData.LastWriteTime);
     }
 
-    private static void ProcessSegment(string[] cells, int cellIndex, List<SubItem> items, string rootFolder)
+    private static void ProcessSegment(string[] cells
+        , int cellIndex
+        , List<SubItem> items
+        , string rootFolder
+        , DateTime? lastWriteTime)
     {
         var cell = cells[cellIndex];
 
@@ -52,7 +59,12 @@ internal static class XmlCreator
 
         if (cells.Length > nextCellIndex)
         {
-            ProcessSegment(cells, nextCellIndex, item.Item, rootFolder);
+            ProcessSegment(cells, nextCellIndex, item.Item, rootFolder, lastWriteTime);
+        }
+        else if (lastWriteTime.HasValue)
+        {
+            item.LastWriteTime = lastWriteTime.Value;
+            item.LastWriteTimeSpecified = true;
         }
     }
 

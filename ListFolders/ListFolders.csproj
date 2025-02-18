@@ -14,6 +14,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="DoenaSoft.AbstractionLayer.IO" Version="3.0.1" />
 	  <PackageReference Include="DoenaSoft.ToolBox" Version="3.0.1" />
 	</ItemGroup>
 

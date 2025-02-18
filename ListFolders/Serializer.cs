@@ -1,11 +1,12 @@
-﻿using DoenaSoft.ListFolders.Xml;
+﻿using DoenaSoft.AbstractionLayer.IOServices;
+using DoenaSoft.ListFolders.Xml;
 using DoenaSoft.ToolBox.Generics;
 
 namespace DoenaSoft.ListFolders;
 
 internal static class Serializer
 {
-    internal static void Serialize(DirectoryInfo folder, string outputFileName, RootItem rootItem)
+    internal static void Serialize(IFolderInfo folder, string outputFileName, RootItem rootItem)
     {
         var outputFile = new FileInfo(Path.Combine(folder.FullName, outputFileName));
 

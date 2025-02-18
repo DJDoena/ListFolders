@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using DoenaSoft.AbstractionLayer.IOServices;
 using DoenaSoft.ListFolders;
 
 Console.WriteLine($"ListFolders v{Assembly.GetExecutingAssembly().GetName().Version}");
@@ -7,7 +8,11 @@ try
 {
     if (args?.Length == 3)
     {
-        Scan(new DirectoryInfo(args[0]), args[1], args[2]);
+        var ioService = new IOServices();
+
+        var rootFolder = ioService.GetFolder(args[0]);
+
+        Scan(rootFolder, args[1], args[2]);
     }
     else
     {
@@ -24,7 +29,7 @@ finally
     //Console.WriteLine("Press <Enter> to exit.");
 }
 
-static void Scan(DirectoryInfo folder, string searchPatterns, string outputFileName)
+static void Scan(IFolderInfo folder, string searchPatterns, string outputFileName)
 {
     Console.WriteLine($"Listing '{folder.FullName}' ('{searchPatterns}') to '{outputFileName}'");
 
@@ -32,7 +37,7 @@ static void Scan(DirectoryInfo folder, string searchPatterns, string outputFileN
 
     var rootItem = XmlCreator.Create(folder, folderNames);
 
-    Cleaner.Clean(rootItem);    
-    
+    Cleaner.Clean(rootItem);
+
     Serializer.Serialize(folder, outputFileName, rootItem);
 }
