@@ -8,9 +8,7 @@ try
 {
     if (args?.Length == 3)
     {
-        var ioService = new IOServices();
-
-        var rootFolder = ioService.GetFolder(args[0]);
+        var rootFolder = (new IOServices()).GetFolder(args[0]);
 
         Scan(rootFolder, args[1], args[2]);
     }
