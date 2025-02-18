@@ -10,71 +10,71 @@ public sealed class FolderInfoTests
     [TestMethod]
     public void TwoParts()
     {
-        var albumFolders = new List<IFolderInfo>();
+        var rootFolder = CreateFolder(null, null, @"C:\", out var _, out var albumFolders);
 
-        var rootFolder = new FolderInfoMock()
+        var albumFolder = CreateFolder(rootFolder, albumFolders, "Album", out var _, out var discFolders);
+
+        var disc1Folder = CreateFolder(albumFolder, discFolders, "Disc 1", out var disc1Files, out _);
+
+        AddFile(disc1Folder, disc1Files, "Title A.mp3", new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+
+        var disc2Folder = CreateFolder(albumFolder, discFolders, "Disc 2", out var disc2Files, out _);
+
+        AddFile(disc2Folder, disc2Files, "Title B.mp3", new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc));
+
+        var folderInfos = FolderGetter.Get(rootFolder, "*.mp3");
+
+        Assert.IsNotNull(folderInfos);
+        Assert.AreEqual(1, folderInfos.Count);
+
+        var folderInfo = folderInfos[0];
+
+        Assert.IsNotNull(folderInfo);
+        Assert.IsTrue(folderInfo.LastWriteTime.HasValue);
+        Assert.AreEqual(new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc), folderInfo.LastWriteTime.Value);
+    }
+
+    private static IFolderInfo CreateFolder(IFolderInfo parent
+        , List<IFolderInfo> siblings
+        , string name
+        , out List<IFileInfo> files
+        , out List<IFolderInfo> subFolders)
+    {
+        var fullName = parent != null
+            ? @$"{parent.FullName}\{name}"
+            : name;
+
+        files = [];
+
+        subFolders = [];
+
+        var folder = new FolderInfoMock()
         {
-            FullName = @"C:\",
-            Name = @"C:\",
-            Folders = albumFolders,
+            Parent = parent,
+            FullName = fullName,
+            Name = name,
+            Folders = subFolders,
+            Files = files,
         };
 
-        var discFolders = new List<IFolderInfo>();
+        siblings?.Add(folder);
 
-        var albumFolder = new FolderInfoMock()
-        {
-            Parent = rootFolder,
-            FullName = @"C:\Album",
-            Name = "Album",
-            Folders = discFolders,
-        };
+        return folder;
+    }
 
-        albumFolders.Add(albumFolder);
-
-        var disc1Files = new List<IFileInfo>();
-
-        var disc1Folder = new FolderInfoMock()
-        {
-            Parent = albumFolder,
-            FullName = @"C:\Album\Disc 1",
-            Name = "Disc 1",
-            Files = disc1Files,
-        };
-
-        discFolders.Add(disc1Folder);
-
-        var titleAFile = new FileInfoMock()
-        {
-            Folder = disc1Folder,
-            FullName = @"C:\Album\ Disc 1\Title A.mp3",
-            Name = "Title A.mp3",
-            LastWriteTimeUtc = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-        };
-
-        disc1Files.Add(titleAFile);
-
-        var disc2Files = new List<IFileInfo>();
-
-        var disc2Folder = new FolderInfoMock()
-        {
-            Parent = albumFolder,
-            FullName = @"C:\Album\ Disc 2",
-            Name = "Disc 2",
-            Files = disc2Files,
-        };
-
-        discFolders.Add(disc2Folder);
-
+    private static void AddFile(IFolderInfo folder
+        , List<IFileInfo> files
+        , string name
+        , DateTime writeTime)
+    {
         var titleBFile = new FileInfoMock()
         {
-            Folder = disc2Folder,
-            FullName = @"C:\Album\ Disc 2\Title B.mp3",
-            Name = "Title B.mp3",
-            LastWriteTimeUtc = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+            Folder = folder,
+            FullName = @$"{folder.FullName}\{name}",
+            Name = name,
+            LastWriteTimeUtc = writeTime,
         };
 
-        disc2Files.Add(titleBFile);
-
-        FolderGetter.Get(rootFolder, "*.mp3");
+        files.Add(titleBFile);
     }
 }

@@ -21,10 +21,15 @@ internal sealed class FolderInfoMock : IFolderInfo
     public string FullName { get; set; }
 
     public DateTime LastWriteTime { get; set; }
+
     public DateTime LastWriteTimeUtc { get; set; }
+
     public DateTime CreationTime { get; set; }
+
     public DateTime CreationTimeUtc { get; set; }
+
     public DateTime LastAccessTime { get; set; }
+
     public DateTime LastAccessTimeUtc { get; set; }
 
     public IEnumerable<IFileInfo> Files { get; set; }
@@ -52,15 +57,13 @@ internal sealed class FolderInfoMock : IFolderInfo
             [
                 .. files,
                 .. subFolders
-                    .SelectMany(f =>
-                        {
-                            var subFiles = f.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
+                    .SelectMany(subFolder =>
+                    {
+                        var subFiles = subFolder.GetFiles(searchPattern, SearchOption.TopDirectoryOnly);
 
-                            return subFiles;
-                        })
+                        return subFiles;
+                    })
             ];
-
-            return files;
         }
 
         return files;
@@ -76,9 +79,9 @@ internal sealed class FolderInfoMock : IFolderInfo
             [
                 .. folders,
                 .. folders
-                    .SelectMany(f =>
+                    .SelectMany(subFolder =>
                     {
-                        var subFolders = f.GetFolders(searchPattern, searchOption);
+                        var subFolders = subFolder.GetFolders(searchPattern, searchOption);
 
                         return subFolders;
                     }),
