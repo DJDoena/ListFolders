@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using DoenaSoft.AbstractionLayer.IOServices;
 using DoenaSoft.ListFolders;
 
@@ -37,5 +38,25 @@ static void Scan(IFolderInfo folder, string searchPatterns, string outputFileNam
 
     Cleaner.Clean(rootItem);
 
-    Serializer.Serialize(folder, outputFileName, rootItem);
+    var (oldFileName, outFileName) = Serializer.Serialize(folder, outputFileName, rootItem);
+
+    if (File.Exists(oldFileName))
+    {
+        StartBeyondCompare(oldFileName, outFileName);
+    }
+}
+
+static void StartBeyondCompare(string oldFileName, string outFileName)
+{
+    var psi = new ProcessStartInfo(@"C:\Program Files\Beyond Compare 5\BCompare.exe");
+
+    psi.ArgumentList.Add(outFileName);
+    psi.ArgumentList.Add(oldFileName);
+
+    var process = new Process()
+    {
+        StartInfo = psi,
+    };
+
+    process.Start();
 }

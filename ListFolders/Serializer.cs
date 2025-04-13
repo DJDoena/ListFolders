@@ -6,17 +6,25 @@ namespace DoenaSoft.ListFolders;
 
 internal static class Serializer
 {
-    internal static void Serialize(IFolderInfo folder, string outputFileName, RootItem rootItem)
+    internal static (string oldFileName, string outFileName) Serialize(IFolderInfo folder, string outputFileName, RootItem rootItem)
     {
         var outputFile = new FileInfo(Path.Combine(folder.FullName, outputFileName));
 
-        Backup($"{outputFile.FullName}.old", $"{outputFile.FullName}.old.old");
+        var oldOldFileName = $"{outputFile.FullName}.old.old";
 
-        Backup(outputFile.FullName, $"{outputFile.FullName}.old");
+        var oldFileName = $"{outputFile.FullName}.old";
+
+        Backup(oldFileName, oldOldFileName);
+
+        var outFileName = outputFile.FullName;
+
+        Backup(outFileName, oldFileName);
 
         (new XsltSerializer<RootItem>(new RootItemXsltSerializerDataProvider())).Serialize(outputFile.FullName, rootItem);
 
         File.SetAttributes(outputFile.FullName, FileAttributes.Archive);
+
+        return (oldFileName, outFileName);
     }
 
     private static void Backup(string sourceFileName, string targetFileName)
