@@ -11,7 +11,7 @@ on:
 env:
   SOURCE_URL: https://api.nuget.org/v3/index.json
   PROJECT_FILE: FolderList.Xml.csproj
-  PROJECT_FOLDER: FolderList.Xml\FolderList.Xml
+  PROJECT_FOLDER: FolderList.Xml
   BUILD_CONFIGURATION: Release
   
 jobs:
