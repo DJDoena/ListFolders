@@ -12,9 +12,9 @@ internal static class Cleaner
         }
     }
 
-    private static bool Clean(ref List<SubItem> items)
+    private static bool Clean(ref SubItem[] items)
     {
-        if (items != null && items.Count == 0)
+        if (items != null && items.Length == 0)
         {
             items = null;
 

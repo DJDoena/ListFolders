@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="RootItem" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
 	<!-- xsd.exe RootItem.xsd /c /l:cs /f /n:DoenaSoft.FolderList.Xml -->
-	
+
+	<xs:element name="doc" type="Document" />
 	<xs:element name="RootItem" type="RootItem" />
+
+	<xs:complexType name="Document">
+		<xs:sequence>
+			<xs:element name="RootItem" type="RootItem" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
 
 	<xs:complexType name="RootItem">
 		<xs:sequence>

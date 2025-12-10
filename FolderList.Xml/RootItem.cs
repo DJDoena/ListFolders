@@ -20,12 +20,12 @@ namespace DoenaSoft.FolderList.Xml {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public partial class RootItem {
+    [System.Xml.Serialization.XmlRootAttribute("doc", Namespace="", IsNullable=false)]
+    public partial class Document {
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Item")]
-        public List<SubItem> Item;
+        [System.Xml.Serialization.XmlArrayItemAttribute("Item", IsNullable=false)]
+        public SubItem[] RootItem;
     }
     
     /// <remarks/>
@@ -37,8 +37,8 @@ namespace DoenaSoft.FolderList.Xml {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Item")]
-        public List<SubItem> Item;
-
+        public SubItem[] Item;
+        
         /// <remarks/>
         public string FullPath;
         
@@ -53,5 +53,18 @@ namespace DoenaSoft.FolderList.Xml {
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool LastWriteTimeSpecified;
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class RootItem {
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Item")]
+        public SubItem[] Item;
     }
 }

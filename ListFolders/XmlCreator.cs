@@ -35,7 +35,7 @@ internal static class XmlCreator
 
     private static void ProcessSegment(string[] cells
         , int cellIndex
-        , List<SubItem> items
+        , SubItem[] items
         , string rootFolder
         , DateTime? lastWriteTime)
     {
@@ -52,7 +52,7 @@ internal static class XmlCreator
                 FullPath = GetFullPath(rootFolder, cells, cellIndex),
             };
 
-            items.Add(item);
+            items = [.. items, item];
         }
 
         var nextCellIndex = cellIndex + 1;
