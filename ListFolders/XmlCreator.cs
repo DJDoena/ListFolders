@@ -30,12 +30,12 @@ internal static class XmlCreator
 
         var lineParts = line.Split('\\');
 
-        ProcessSegment(lineParts, 0, rootItem.Item, rootFolder, folderData.LastWriteTime);
+        ProcessSegment(lineParts, 0, ref rootItem.Item, rootFolder, folderData.LastWriteTime);
     }
 
     private static void ProcessSegment(string[] cells
         , int cellIndex
-        , SubItem[] items
+        , ref SubItem[] items
         , string rootFolder
         , DateTime? lastWriteTime)
     {
@@ -59,7 +59,7 @@ internal static class XmlCreator
 
         if (cells.Length > nextCellIndex)
         {
-            ProcessSegment(cells, nextCellIndex, item.Item, rootFolder, lastWriteTime);
+            ProcessSegment(cells, nextCellIndex, ref item.Item, rootFolder, lastWriteTime);
         }
         else if (lastWriteTime.HasValue)
         {
