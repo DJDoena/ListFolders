@@ -20,9 +20,9 @@
 		<Description>XML schemas for handling ListFolders</Description>
 		<Company>Doena Soft.</Company>
 		<Authors>DJ Doena</Authors>
-		<Copyright>Copyright © Doena Soft. 2025</Copyright>
-		<Version>1.0.3</Version>
-		<FileVersion>1.0.3</FileVersion>
+		<Copyright>Copyright © Doena Soft. 2025 - 2026</Copyright>
+		<Version>1.0.4</Version>
+		<FileVersion>1.0.4</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DoenaSoft.ToolBox" Version="3.0.3" />
+		<PackageReference Include="DoenaSoft.ToolBox" Version="3.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
