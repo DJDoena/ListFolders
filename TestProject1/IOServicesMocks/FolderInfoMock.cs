@@ -35,8 +35,19 @@ internal sealed class FolderInfoMock : IFolderInfo
     public IEnumerable<IFileInfo> Files { get; set; }
 
     public IEnumerable<IFolderInfo> Folders { get; set; }
+    public FileAttributes Attributes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public void Create()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(bool recursive)
     {
         throw new NotImplementedException();
     }
@@ -69,6 +80,16 @@ internal sealed class FolderInfoMock : IFolderInfo
         return files;
     }
 
+    public IEnumerable<IFileInfo> GetFiles()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IFileInfo> GetFiles(string searchPattern)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<IFolderInfo> GetFolders(string searchPattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
     {
         var folders = this.Folders ?? [];
@@ -89,5 +110,20 @@ internal sealed class FolderInfoMock : IFolderInfo
         }
 
         return folders;
+    }
+
+    public IEnumerable<IFolderInfo> GetFolders()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IFolderInfo> GetFolders(string searchPattern)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void MoveTo(string destFolderName)
+    {
+        throw new NotImplementedException();
     }
 }
