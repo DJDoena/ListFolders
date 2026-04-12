@@ -14,7 +14,7 @@
 		<PackageProjectUrl>https://github.com/DJDoena/ListFolders</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/DJDoena/ListFolders</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageIcon>..\djdsoft.png</PackageIcon>
+		<PackageIcon>djdsoft.png</PackageIcon>
 		<Description>XML schemas for handling ListFolders</Description>
 		<Company>Doena Soft.</Company>
 		<Authors>DJ Doena</Authors>
