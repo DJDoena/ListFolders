@@ -10,8 +10,8 @@ on:
       
 env:
   SOURCE_URL: https://api.nuget.org/v3/index.json
-  PROJECT_FILE: FolderList.Lib.csproj
-  PROJECT_FOLDER: FolderList.Lib
+  PROJECT_FILE: FolderList.csproj
+  PROJECT_FOLDER: FolderList
   BUILD_CONFIGURATION: Release
   
 jobs:
