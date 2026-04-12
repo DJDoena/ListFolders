@@ -1,6 +1,4 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-using DoenaSoft.FolderList;
-using TestProject1.IOServicesMocks;
+﻿using DoenaSoft.FolderList;
 
 namespace TestProject1;
 
@@ -34,11 +32,11 @@ public sealed class FolderInfoTests
         Assert.AreEqual(new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc), folderInfo.LastWriteTime.Value);
     }
 
-    private static IFolderInfo CreateFolder(IFolderInfo parent
-        , List<IFolderInfo> siblings
+    private static DirectoryInfo CreateFolder(DirectoryInfo parent
+        , List<DirectoryInfo> siblings
         , string name
-        , out List<IFileInfo> files
-        , out List<IFolderInfo> subFolders)
+        , out List<FileInfo> files
+        , out List<DirectoryInfo> subFolders)
     {
         var fullName = parent != null
             ? @$"{parent.FullName}\{name}"
@@ -48,32 +46,19 @@ public sealed class FolderInfoTests
 
         subFolders = [];
 
-        var folder = new FolderInfoMock()
-        {
-            Parent = parent,
-            FullName = fullName,
-            Name = name,
-            Folders = subFolders,
-            Files = files,
-        };
+        var folder = new DirectoryInfo(fullName);
 
         siblings?.Add(folder);
 
         return folder;
     }
 
-    private static void AddFile(IFolderInfo folder
-        , List<IFileInfo> files
+    private static void AddFile(DirectoryInfo folder
+        , List<FileInfo> files
         , string name
         , DateTime writeTime)
     {
-        var titleBFile = new FileInfoMock()
-        {
-            Folder = folder,
-            FullName = @$"{folder.FullName}\{name}",
-            Name = name,
-            LastWriteTimeUtc = writeTime,
-        };
+        var titleBFile = new FileInfo(@$"{folder.FullName}\{name}");
 
         files.Add(titleBFile);
     }

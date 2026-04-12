@@ -1,10 +1,8 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-
-namespace DoenaSoft.FolderList;
+﻿namespace DoenaSoft.FolderList;
 
 internal static class FolderGetter
 {
-    internal static List<FolderData> Get(IFolderInfo folder
+    internal static List<FolderData> Get(DirectoryInfo folder
         , string searchPatterns)
     {
         var searchPatternList = searchPatterns.Split(',');
@@ -18,11 +16,11 @@ internal static class FolderGetter
         return folderInfos;
     }
 
-    private static List<FolderData> Get(IFolderInfo folder
-        , IEnumerable<IFileInfo> files)
+    private static List<FolderData> Get(DirectoryInfo folder
+        , IEnumerable<FileInfo> files)
     {
         var folders = files
-            .Select(f => f.Folder)
+            .Select(f => f.Directory)
             .Where(f => f.FullName != folder.FullName)
             .Distinct(new FolderInfoEqualityComparer());
 
@@ -35,8 +33,8 @@ internal static class FolderGetter
         return folderInfos;
     }
 
-    private static FolderData GetFolderInfo(IFolderInfo folder
-        , IEnumerable<IFileInfo> allFiles)
+    private static FolderData GetFolderInfo(DirectoryInfo folder
+        , IEnumerable<FileInfo> allFiles)
     {
         var folderFiles = GetFolderFiles(folder, allFiles);
 
@@ -58,7 +56,7 @@ internal static class FolderGetter
         }
     }
 
-    private static IEnumerable<IFileInfo> GetFolderFiles(IFolderInfo folder
-        , IEnumerable<IFileInfo> files)
-        => files.Where(f => f.Folder.FullName == folder.FullName);
+    private static IEnumerable<FileInfo> GetFolderFiles(DirectoryInfo folder
+        , IEnumerable<FileInfo> files)
+        => files.Where(f => f.Directory.FullName == folder.FullName);
 }

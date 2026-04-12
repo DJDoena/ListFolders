@@ -31,7 +31,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DoenaSoft.AbstractionLayer.IO" Version="6.0.4" />
 		<PackageReference Include="DoenaSoft.FolderList.Xml" Version="1.0.5" />
 	</ItemGroup>
 

@@ -1,16 +1,16 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace DoenaSoft.FolderList;
 
 [DebuggerDisplay("{Folder.FullName}")]
 internal sealed class FolderData : IEquatable<FolderData>, IComparable<FolderData>
 {
-    public IFolderInfo Folder { get; }
+    public DirectoryInfo Folder { get; }
 
     public DateTime? LastWriteTime { get; }
 
-    public FolderData(IFolderInfo folder, IEnumerable<IFileInfo> files)
+    public FolderData(DirectoryInfo folder
+        , IEnumerable<FileInfo> files)
     {
         this.Folder = folder;
 

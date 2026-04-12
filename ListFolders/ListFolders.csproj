@@ -14,8 +14,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DoenaSoft.AbstractionLayer.IO.Default" Version="2.0.2" />
-		<PackageReference Include="DoenaSoft.FolderList" Version="1.0.0" />
+	  <ProjectReference Include="..\FolderList\FolderList.csproj" />
 	</ItemGroup>
 
 </Project>

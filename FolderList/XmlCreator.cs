@@ -1,11 +1,10 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-using DoenaSoft.FolderList.Xml;
+﻿using DoenaSoft.FolderList.Xml;
 
 namespace DoenaSoft.FolderList;
 
 internal static class XmlCreator
 {
-    internal static RootItem Create(IFolderInfo folder
+    internal static RootItem Create(DirectoryInfo folder
         , List<FolderData> folderDatas)
     {
         var rootItem = new RootItem()

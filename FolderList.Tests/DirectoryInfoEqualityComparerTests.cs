@@ -1,19 +1,15 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-using DoenaSoft.FolderList;
+﻿using DoenaSoft.FolderList;
 
 namespace TestProject1;
 
 [TestClass]
 public sealed class DirectoryInfoEqualityComparerTests
 {
-    private readonly IIOServices _ioServices;
 
-    private readonly IEqualityComparer<IFolderInfo> _comparer;
+    private readonly IEqualityComparer<DirectoryInfo> _comparer;
 
     public DirectoryInfoEqualityComparerTests()
     {
-        _ioServices = new IOServices();
-
         _comparer = new FolderInfoEqualityComparer();
     }
 
@@ -28,7 +24,7 @@ public sealed class DirectoryInfoEqualityComparerTests
     [TestMethod]
     public void LeftNull()
     {
-        var equals = _comparer.Equals(null, _ioServices.GetFolder(@"C:\"));
+        var equals = _comparer.Equals(null, new DirectoryInfo(@"C:\"));
 
         Assert.IsFalse(equals);
     }
@@ -36,7 +32,7 @@ public sealed class DirectoryInfoEqualityComparerTests
     [TestMethod]
     public void RightNull()
     {
-        var equals = _comparer.Equals(_ioServices.GetFolder(@"C:\"), null);
+        var equals = _comparer.Equals(new DirectoryInfo(@"C:\"), null);
 
         Assert.IsFalse(equals);
     }
@@ -44,7 +40,7 @@ public sealed class DirectoryInfoEqualityComparerTests
     [TestMethod]
     public void BothEqual()
     {
-        var equals = _comparer.Equals(_ioServices.GetFolder(@"C:\"), _ioServices.GetFolder(@"C:\"));
+        var equals = _comparer.Equals(new DirectoryInfo(@"C:\"), new DirectoryInfo(@"C:\"));
 
         Assert.IsTrue(equals);
     }

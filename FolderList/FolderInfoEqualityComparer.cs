@@ -1,13 +1,11 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
+﻿namespace DoenaSoft.FolderList;
 
-namespace DoenaSoft.FolderList;
-
-internal sealed class FolderInfoEqualityComparer : IEqualityComparer<IFolderInfo>
+internal sealed class FolderInfoEqualityComparer : IEqualityComparer<DirectoryInfo>
 {
-    public bool Equals(IFolderInfo left, IFolderInfo right)
+    public bool Equals(DirectoryInfo left, DirectoryInfo right)
         => ReferenceEquals(left, right)
             || left?.FullName.Equals(right?.FullName) == true;
 
-    public int GetHashCode(IFolderInfo obj)
+    public int GetHashCode(DirectoryInfo obj)
         => obj?.FullName.GetHashCode() ?? -1;
 }

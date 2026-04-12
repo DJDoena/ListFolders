@@ -1,10 +1,8 @@
-﻿using DoenaSoft.AbstractionLayer.IOServices;
-
-namespace DoenaSoft.FolderList;
+﻿namespace DoenaSoft.FolderList;
 
 public static class Creator
 {
-    public static (string oldFileName, string outFileName) Scan(IFolderInfo folder
+    public static (string oldFileName, string outFileName) Scan(DirectoryInfo folder
         , string searchPatterns
         , string outputFileName)
     {
