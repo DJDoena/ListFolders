@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FolderList.Xml/FolderList.Xml.csproj" />
+  <Project Path="FolderList/FolderList.csproj" Id="d78d1b80-e4da-4528-8542-a0336d577d9a" />
+  <Project Path="FolderList.Tests/FolderList.Tests.csproj" Id="a797daec-ed62-4c2f-ba24-5054a2997dfe" />
+  <Project Path="ListFolders/ListFolders.csproj" />
+</Solution>

@@ -19,21 +19,21 @@ DoenaSoft.FolderList is a core library that provides functionality to scan file 
 
 Install via NuGet Package Manager:
 
-``bash
+```bash
 dotnet add package DoenaSoft.FolderList
-``
+```
 
 Or via Package Manager Console:
 
-``powershell
+```powershell
 Install-Package DoenaSoft.FolderList
-``
+```
 
 ## Usage
 
 ### Basic Example
 
-``csharp
+```csharp
 using DoenaSoft.AbstractionLayer.IOServices;
 using DoenaSoft.FolderList;
 
@@ -50,13 +50,13 @@ var (oldFileName, outFileName) = Creator.Scan(
 
 // oldFileName contains the previous version path (if it existed)
 // outFileName contains the new output file path
-``
+```
 
 ### Advanced Usage
 
 For more control over the scanning process, you can use the individual components:
 
-``csharp
+```csharp
 using DoenaSoft.AbstractionLayer.IOServices;
 using DoenaSoft.FolderList;
 
@@ -78,7 +78,7 @@ var (oldFile, newFile) = Serializer.Serialize(
     "music-list.xml", 
     rootItem
 );
-``
+```
 
 ## API Reference
 
@@ -86,7 +86,7 @@ var (oldFile, newFile) = Serializer.Serialize(
 
 Main entry point for the scanning process.
 
-``csharp
+```csharp
 public static class Creator
 {
     public static (string oldFileName, string outFileName) Scan(
@@ -94,50 +94,50 @@ public static class Creator
         string searchPatterns,
         string outputFileName);
 }
-``
+```
 
 ### FolderGetter
 
 Scans directories and collects folder information based on file patterns.
 
-``csharp
+```csharp
 internal static class FolderGetter
 {
     internal static List<FolderData> Get(
         IFolderInfo folder,
         string searchPatterns);
 }
-``
+```
 
 ### XmlCreator
 
 Generates hierarchical XML structure from folder data.
 
-``csharp
+```csharp
 internal static class XmlCreator
 {
     internal static RootItem Create(
         IFolderInfo folder,
         List<FolderData> folderDatas);
 }
-``
+```
 
 ### Cleaner
 
 Optimizes the XML structure by removing redundant entries.
 
-``csharp
+```csharp
 internal static class Cleaner
 {
     internal static void Clean(RootItem rootItem);
 }
-``
+```
 
 ### Serializer
 
 Handles XML serialization to file system.
 
-``csharp
+```csharp
 internal static class Serializer
 {
     internal static (string oldFileName, string outFileName) Serialize(
@@ -145,7 +145,7 @@ internal static class Serializer
         string outputFileName,
         RootItem rootItem);
 }
-``
+```
 
 ## Special Folder Handling
 
@@ -160,7 +160,7 @@ These folders are automatically grouped under their parent folder to avoid dupli
 ## Dependencies
 
 - [DoenaSoft.AbstractionLayer.IO](https://www.nuget.org/packages/DoenaSoft.AbstractionLayer.IO/) (>= 6.0.4)
-- [DoenaSoft.FolderList.Xml](https://www.nuget.org/packages/DoenaSoft.FolderList.Xml/) (>= 1.0.4)
+- [DoenaSoft.FolderList.Xml](https://www.nuget.org/packages/DoenaSoft.FolderList.Xml/) (>= 1.0.5)
 
 ## Target Frameworks
 

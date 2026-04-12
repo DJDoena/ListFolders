@@ -58,16 +58,16 @@ This will:
 ## Project Structure
 
 - **ListFolders**: Console application entry point (.NET 10.0)
-- **ListFolders.Lib**: Core library containing the scanning and XML generation logic (.NET 10.0)
-- **FolderList.Xml**: External NuGet package for XML schema handling
-- **ListFolders.Tests**: MSTest-based unit tests (.NET 10.0)
+- **FolderList**: Core library containing the scanning and XML generation logic (.NET Standard 2.0 / .NET 10.0)
+- **FolderList.Xml**: NuGet package for XML schema handling (.NET Standard 2.0 / .NET 10.0)
+- **FolderList.Tests**: MSTest-based unit tests (.NET 10.0)
 
 ## Dependencies
 
 ### NuGet Packages
 - [DoenaSoft.AbstractionLayer.IO.Default](https://www.nuget.org/packages/DoenaSoft.AbstractionLayer.IO.Default/) (v2.0.2): File system abstraction layer (used by console app)
 - [DoenaSoft.AbstractionLayer.IO](https://www.nuget.org/packages/DoenaSoft.AbstractionLayer.IO/) (v6.0.4): File system abstraction interfaces (used by library)
-- [DoenaSoft.FolderList.Xml](https://www.nuget.org/packages/DoenaSoft.FolderList.Xml/) (v1.0.4): XML schema library for folder list serialization
+- [DoenaSoft.FolderList.Xml](https://www.nuget.org/packages/DoenaSoft.FolderList.Xml/) (v1.0.5): XML schema library for folder list serialization
 - [MSTest.Sdk](https://www.nuget.org/packages/MSTest.Sdk/) (v4.0.2): Testing framework
 
 ## How It Works

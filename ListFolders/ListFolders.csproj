@@ -4,21 +4,18 @@
 		<AssemblyName>ListFolders</AssemblyName>
 		<RootNamespace>DoenaSoft.ListFolders</RootNamespace>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
-		<Platforms>x64</Platforms>
+		<TargetFramework>net10.0</TargetFramework>
 		<Configurations>Debug</Configurations>
 		<ApplicationIcon>djdsoft.ico</ApplicationIcon>
 		<ImplicitUsings>true</ImplicitUsings>
+		<Nullable>disable</Nullable>
 		<Version>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</Version>
 		<FileVersion>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="DoenaSoft.AbstractionLayer.IO.Default" Version="2.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\FolderList.Xml\FolderList.Xml.csproj" />
+		<PackageReference Include="DoenaSoft.AbstractionLayer.IO.Default" Version="2.0.2" />
+		<PackageReference Include="DoenaSoft.FolderList" Version="1.0.0" />
 	</ItemGroup>
 
 </Project>
