@@ -23,7 +23,7 @@ public sealed class FolderInfoTests
         var folderInfos = FolderGetter.Get(rootFolder, "*.mp3");
 
         Assert.IsNotNull(folderInfos);
-        Assert.AreEqual(1, folderInfos.Count);
+        Assert.HasCount(1, folderInfos);
 
         var folderInfo = folderInfos[0];
 

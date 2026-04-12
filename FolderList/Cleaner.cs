@@ -2,8 +2,15 @@
 
 namespace DoenaSoft.FolderList;
 
+/// <summary>
+/// Provides functionality for cleaning and optimizing XML folder structures.
+/// </summary>
 internal static class Cleaner
 {
+    /// <summary>
+    /// Cleans the XML structure by removing empty items and optimizing path information.
+    /// </summary>
+    /// <param name="rootItem">The root item of the XML structure to clean.</param>
     internal static void Clean(RootItem rootItem)
     {
         if (!Clean(ref rootItem.Item))

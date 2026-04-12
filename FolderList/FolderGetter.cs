@@ -1,7 +1,16 @@
 ﻿namespace DoenaSoft.FolderList;
 
+/// <summary>
+/// Provides functionality for gathering folder information based on file search patterns.
+/// </summary>
 internal static class FolderGetter
 {
+    /// <summary>
+    /// Scans a directory for files matching specified patterns and collects folder information.
+    /// </summary>
+    /// <param name="folder">The root directory to scan.</param>
+    /// <param name="searchPatterns">Comma-separated list of file patterns to search for (e.g., "*.mp4,*.avi").</param>
+    /// <returns>A list of folder data containing all folders with matching files.</returns>
     internal static List<FolderData> Get(DirectoryInfo folder
         , string searchPatterns)
     {

@@ -3,8 +3,18 @@ using DoenaSoft.ToolBox.Generics;
 
 namespace DoenaSoft.FolderList;
 
+/// <summary>
+/// Provides functionality for serializing folder structures to XML files with backup management.
+/// </summary>
 internal static class Serializer
 {
+    /// <summary>
+    /// Serializes the folder structure to an XML file and manages backup files.
+    /// </summary>
+    /// <param name="folder">The root directory where the output file will be created.</param>
+    /// <param name="outputFileName">The name of the output XML file.</param>
+    /// <param name="rootItem">The root item containing the folder structure to serialize.</param>
+    /// <returns>A tuple containing the path to the backup file and the new output file.</returns>
     internal static (string oldFileName, string outFileName) Serialize(DirectoryInfo folder
         , string outputFileName
         , RootItem rootItem)

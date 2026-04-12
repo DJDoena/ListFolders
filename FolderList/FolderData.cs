@@ -2,13 +2,27 @@
 
 namespace DoenaSoft.FolderList;
 
+/// <summary>
+/// Represents data for a folder containing files that match search patterns, including timestamp information.
+/// </summary>
 [DebuggerDisplay("{Folder.FullName}")]
 internal sealed class FolderData : IEquatable<FolderData>, IComparable<FolderData>
 {
+    /// <summary>
+    /// Gets the directory information for this folder.
+    /// </summary>
     public DirectoryInfo Folder { get; }
 
+    /// <summary>
+    /// Gets the last write time of the newest file in this folder, or null if no files were found.
+    /// </summary>
     public DateTime? LastWriteTime { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FolderData"/> class.
+    /// </summary>
+    /// <param name="folder">The directory containing the files.</param>
+    /// <param name="files">The files in the folder to analyze for timestamp information.</param>
     public FolderData(DirectoryInfo folder
         , IEnumerable<FileInfo> files)
     {

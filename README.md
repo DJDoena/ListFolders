@@ -65,10 +65,12 @@ This will:
 ## Dependencies
 
 ### NuGet Packages
-- [DoenaSoft.AbstractionLayer.IO.Default](https://www.nuget.org/packages/DoenaSoft.AbstractionLayer.IO.Default/) (v2.0.2): File system abstraction layer (used by console app)
-- [DoenaSoft.AbstractionLayer.IO](https://www.nuget.org/packages/DoenaSoft.AbstractionLayer.IO/) (v6.0.4): File system abstraction interfaces (used by library)
 - [DoenaSoft.FolderList.Xml](https://www.nuget.org/packages/DoenaSoft.FolderList.Xml/) (v1.0.5): XML schema library for folder list serialization
+- [DoenaSoft.ToolBox](https://www.nuget.org/packages/DoenaSoft.ToolBox/) (v3.0.4): XML serialization utilities (used by FolderList.Xml)
 - [MSTest.Sdk](https://www.nuget.org/packages/MSTest.Sdk/) (v4.0.2): Testing framework
+- [Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/) (v18.4.0): .NET test SDK
+- [MSTest.TestAdapter](https://www.nuget.org/packages/MSTest.TestAdapter/) (v4.2.1): MSTest adapter
+- [MSTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/) (v4.2.1): MSTest framework
 
 ## How It Works
 
