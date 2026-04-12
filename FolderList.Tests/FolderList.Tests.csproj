@@ -9,13 +9,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.4.0" />
-		<PackageReference Update="MSTest.TestAdapter" Version="4.2.1" />
-		<PackageReference Update="MSTest.TestFramework" Version="4.2.1" />
+		<ProjectReference Include="..\FolderList\FolderList.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FolderList\FolderList.csproj" />
+		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+		<PackageReference Update="MSTest.TestAdapter" Version="4.2.1" />
+		<PackageReference Update="MSTest.TestFramework" Version="4.2.1" />
+		<PackageReference Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.6.2" />
+		<PackageReference Update="Microsoft.Testing.Extensions.TrxReport" Version="2.2.1" />
 	</ItemGroup>
 
 </Project>
