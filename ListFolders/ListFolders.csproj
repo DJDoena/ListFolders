@@ -14,7 +14,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\FolderList\FolderList.csproj" />
+	  <PackageReference Include="DoenaSoft.FolderList" Version="1.0.2" />
 	</ItemGroup>
 
 </Project>

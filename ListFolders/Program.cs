@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using DoenaSoft.FolderList;
+using DoenaSoft.ListFolders;
+using System.Diagnostics;
 using System.Reflection;
-using DoenaSoft.FolderList;
 
 Console.WriteLine($"ListFolders v{Assembly.GetExecutingAssembly().GetName().Version}");
 
@@ -31,7 +32,11 @@ static void Scan(DirectoryInfo folder, string searchPatterns, string outputFileN
 {
     Console.WriteLine($"Listing '{folder.FullName}' ('{searchPatterns}') to '{outputFileName}'");
 
-    var (oldFileName, outFileName) = Creator.Scan(folder, searchPatterns, outputFileName);
+    var creator = new Creator(new MultiDiscFolderConsolidator()
+        , new NetworkPathTransformer()
+        , new TwoLevelBackupStrategy());
+
+    var (oldFileName, outFileName) = creator.Scan(folder, searchPatterns, outputFileName);
 
     if (File.Exists(oldFileName))
     {
