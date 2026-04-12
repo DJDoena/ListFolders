@@ -114,7 +114,7 @@ Represents an individual folder in the hierarchy.
 
 This library is part of the ListFolders ecosystem:
 
-- **DoenaSoft.ListFolders**: Core library for scanning directories and generating folder structures
+- **DoenaSoft.FolderList**: Core library for scanning directories and generating folder structures
 - **ListFolders**: Command-line application for creating folder list XML files
 
 ## License

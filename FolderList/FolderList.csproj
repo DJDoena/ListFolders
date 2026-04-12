@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>DoenaSoft.FolderList</AssemblyName>
+		<RootNamespace>DoenaSoft.FolderList</RootNamespace>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<Title>DoenaSoft.FolderList</Title>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/DJDoena/ListFolders</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DJDoena/ListFolders</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>djdsoft.png</PackageIcon>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<Description>Core library for scanning directories and generating hierarchical XML representations of folder structures based on file search patterns.</Description>
+		<PackageTags>folder;directory;scanner;xml;file-search;hierarchy</PackageTags>
+		<Company>Doena Soft.</Company>
+		<Authors>DJ Doena</Authors>
+		<Copyright>Copyright (c) Doena Soft. 2025 - 2026</Copyright>
+		<Version>1.0.0</Version>
+		<FileVersion>1.0.0</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\djdsoft.png" Pack="true" PackagePath="\" />
+		<None Include="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DoenaSoft.AbstractionLayer.IO" Version="6.0.4" />
+		<PackageReference Include="DoenaSoft.FolderList.Xml" Version="1.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="FolderList.Tests" />
+	</ItemGroup>
+
+</Project>
