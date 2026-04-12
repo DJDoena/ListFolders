@@ -5,7 +5,7 @@ namespace DoenaSoft.FolderList;
 /// <summary>
 /// Provides functionality for creating hierarchical XML structures from folder data.
 /// </summary>
-internal static class XmlCreator
+internal sealed class XmlCreator
 {
     /// <summary>
     /// Creates a hierarchical XML root item representing the folder structure.
@@ -13,7 +13,7 @@ internal static class XmlCreator
     /// <param name="folder">The root directory being scanned.</param>
     /// <param name="folderDatas">The collection of folder data to include in the XML structure.</param>
     /// <returns>A <see cref="RootItem"/> representing the hierarchical folder structure.</returns>
-    internal static RootItem Create(DirectoryInfo folder
+    internal RootItem Create(DirectoryInfo folder
         , List<FolderData> folderDatas)
     {
         var rootItem = new RootItem()

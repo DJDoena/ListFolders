@@ -1,6 +1,4 @@
-﻿using DoenaSoft.FolderList;
-
-namespace TestProject1;
+﻿namespace DoenaSoft.FolderList.Tests;
 
 [TestClass]
 public sealed class DirectoryInfoEqualityComparerTests
@@ -10,7 +8,7 @@ public sealed class DirectoryInfoEqualityComparerTests
 
     public DirectoryInfoEqualityComparerTests()
     {
-        _comparer = new FolderInfoEqualityComparer();
+        _comparer = new DirectoryInfoEqualityComparer();
     }
 
     [TestMethod]

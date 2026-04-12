@@ -10,11 +10,13 @@ DoenaSoft.FolderList is a core library that provides functionality to scan file 
 
 - **Pattern-based file scanning**: Search for files using multiple comma-separated patterns (e.g., "*.mp4,*.avi")
 - **Hierarchical XML generation**: Creates structured XML representation of folder trees
-- **Smart folder consolidation**: Automatically groups multi-disc/multi-part folders (cd*, disc*, part*)
+- **Flexible folder consolidation**: Inject custom logic via `IFolderConsolidator` to group multi-disc/multi-part folders
 - **Timestamp tracking**: Records last write time for folders containing matching files
 - **Multi-target support**: Targets both .NET Standard 2.0 and .NET 10.0
 - **Comprehensive XML documentation**: All public and internal APIs are fully documented
-- **Backup management**: Automatically creates backup copies (.old, .old.old) of previous scans
+- **Customizable backup management**: Inject custom backup strategies via `IBackupStrategy` interface
+- **Extensible path transformation**: Inject custom path transformation logic via `IPathTransformer` interface
+- **Constructor injection**: Clean dependency injection pattern with sealed instance classes
 
 ## Installation
 
@@ -40,8 +42,11 @@ using DoenaSoft.FolderList;
 // Get a folder reference
 var rootFolder = new DirectoryInfo(@"C:\Videos");
 
+// Create scanner with default settings (no consolidation or transformation)
+var creator = new Creator();
+
 // Scan for files matching patterns and generate XML output
-var (oldFileName, outFileName) = Creator.Scan(
+var (oldFileName, outFileName) = creator.Scan(
     folder: rootFolder,
     searchPatterns: "*.mp4,*.mkv,*.avi",
     outputFileName: @"C:\Output\video-list.xml"
@@ -49,6 +54,137 @@ var (oldFileName, outFileName) = Creator.Scan(
 
 // oldFileName contains the previous version path (if it existed)
 // outFileName contains the new output file path
+```
+
+### Custom Path Transformation
+
+You can provide custom path transformation logic for special use cases:
+
+```csharp
+using DoenaSoft.FolderList;
+
+// Create a custom transformer in your application
+public class NetworkPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        if (string.IsNullOrEmpty(fullPath))
+            return fullPath;
+
+        if (fullPath.StartsWith(@"N:\", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return fullPath.Substring(3).Replace("\\", "/").TrimEnd('/') + "/";
+        }
+
+        return fullPath;
+    }
+}
+
+// Use it when scanning
+var pathTransformer = new NetworkPathTransformer();
+var creator = new Creator(pathTransformer: pathTransformer);
+
+var rootFolder = new DirectoryInfo(@"N:\Videos");
+
+var (oldFileName, outFileName) = creator.Scan(
+    folder: rootFolder,
+    searchPatterns: "*.mp4,*.mkv,*.avi",
+    outputFileName: @"C:\Output\video-list.xml"
+);
+```
+
+### Custom Folder Consolidation
+
+You can implement custom logic to consolidate multi-disc or multi-part folders:
+
+```csharp
+using DoenaSoft.FolderList;
+
+// Create a custom folder consolidator
+public class MultiDiscFolderConsolidator : IFolderConsolidator
+{
+    public bool ShouldConsolidate(DirectoryInfo folder)
+    {
+        if (folder == null)
+            return false;
+
+        var name = folder.Name;
+        return name.StartsWith("cd", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("disc", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("part", StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+// Use both consolidator and transformer
+var folderConsolidator = new MultiDiscFolderConsolidator();
+var pathTransformer = new NetworkPathTransformer();
+var creator = new Creator(folderConsolidator, pathTransformer);
+
+var (oldFileName, outFileName) = creator.Scan(
+    folder: new DirectoryInfo(@"C:\Music"),
+    searchPatterns: "*.mp3,*.flac",
+    outputFileName: "music-list.xml"
+);
+```
+
+### Custom Backup Strategy
+
+You can implement custom backup file management strategies:
+
+```csharp
+using DoenaSoft.FolderList;
+
+// Create a custom backup strategy
+public class TwoLevelBackupStrategy : IBackupStrategy
+{
+    public string CreateBackups(string outputFilePath)
+    {
+        if (string.IsNullOrEmpty(outputFilePath))
+            return null;
+
+        var oldOldFileName = $"{outputFilePath}.old.old";
+        var oldFileName = $"{outputFilePath}.old";
+
+        // Move .old to .old.old
+        if (File.Exists(oldFileName))
+        {
+            if (File.Exists(oldOldFileName))
+                File.Delete(oldOldFileName);
+            File.Move(oldFileName, oldOldFileName);
+        }
+
+        // Move current to .old
+        if (File.Exists(outputFilePath))
+        {
+            File.Move(outputFilePath, oldFileName);
+            return oldFileName;
+        }
+
+        return null;
+    }
+}
+
+// Use all three customizations
+var folderConsolidator = new MultiDiscFolderConsolidator();
+var pathTransformer = new NetworkPathTransformer();
+var backupStrategy = new TwoLevelBackupStrategy();
+var creator = new Creator(folderConsolidator, pathTransformer, backupStrategy);
+
+var (oldFileName, outFileName) = creator.Scan(
+    folder: new DirectoryInfo(@"C:\Videos"),
+    searchPatterns: "*.mp4,*.mkv",
+    outputFileName: "video-list.xml"
+);
+
+// Or create other custom transformers for different scenarios
+public class UncPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        // Your custom transformation logic
+        return fullPath.Replace(@"\\server\share", "/share");
+    }
+}
 ```
 
 ### Advanced Usage
@@ -60,17 +196,26 @@ using DoenaSoft.FolderList;
 
 var rootFolder = new DirectoryInfo(@"C:\Music");
 
+// Create dependencies
+var folderConsolidator = new MultiDiscFolderConsolidator();
+var pathTransformer = new NetworkPathTransformer();
+var backupStrategy = new TwoLevelBackupStrategy();
+
 // Step 1: Get all folders containing matching files
-var folderData = FolderGetter.Get(rootFolder, "*.mp3,*.flac");
+var folderGetter = new FolderGetter(folderConsolidator);
+var folderData = folderGetter.Get(rootFolder, "*.mp3,*.flac");
 
 // Step 2: Create XML structure
-var rootItem = XmlCreator.Create(rootFolder, folderData);
+var xmlCreator = new XmlCreator();
+var rootItem = xmlCreator.Create(rootFolder, folderData);
 
 // Step 3: Clean up the structure (remove redundant entries)
-Cleaner.Clean(rootItem);
+var cleaner = new Cleaner(pathTransformer);
+cleaner.Clean(rootItem);
 
 // Step 4: Serialize to XML file
-var (oldFile, newFile) = Serializer.Serialize(
+var serializer = new Serializer(backupStrategy);
+var (oldFile, newFile) = serializer.Serialize(
     rootFolder, 
     "music-list.xml", 
     rootItem
@@ -86,16 +231,26 @@ Main entry point for the scanning process. Orchestrates the entire workflow from
 **Namespace**: `DoenaSoft.FolderList`
 
 ```csharp
-public static class Creator
+public sealed class Creator
 {
-    public static (string oldFileName, string outFileName) Scan(
+    public Creator(
+        IFolderConsolidator folderConsolidator = null,
+        IPathTransformer pathTransformer = null,
+        IBackupStrategy backupStrategy = null);
+
+    public (string oldFileName, string outFileName) Scan(
         DirectoryInfo folder,
         string searchPatterns,
         string outputFileName);
 }
 ```
 
-**Parameters**:
+**Constructor Parameters**:
+- `folderConsolidator`: (Optional) Custom folder consolidator for grouping multi-disc/multi-part folders
+- `pathTransformer`: (Optional) Custom path transformer for specialized path handling
+- `backupStrategy`: (Optional) Custom backup strategy for managing backup files
+
+**Scan Method Parameters**:
 - `folder`: The root directory to scan recursively
 - `searchPatterns`: Comma-separated file patterns (e.g., "*.mp4,*.mkv,*.avi")
 - `outputFileName`: The output XML file name (can be relative or absolute path)
@@ -111,18 +266,23 @@ Scans directories and collects folder information based on file patterns. Handle
 **Namespace**: `DoenaSoft.FolderList`
 
 ```csharp
-internal static class FolderGetter
+internal sealed class FolderGetter
 {
-    internal static List<FolderData> Get(
+    internal FolderGetter(IFolderConsolidator folderConsolidator = null);
+
+    internal List<FolderData> Get(
         DirectoryInfo folder,
         string searchPatterns);
 }
 ```
 
+**Constructor Parameters**:
+- `folderConsolidator`: (Optional) Determines which folders should be consolidated with their parent
+
 **Key Behavior**:
 - Splits comma-separated patterns and searches for all matching files
 - Identifies unique folders containing matching files
-- Automatically consolidates multi-disc folders (cd*, disc*, part*)
+- Applies folder consolidation logic via injected `IFolderConsolidator`
 - Tracks the newest file timestamp per folder
 
 ---
@@ -134,9 +294,9 @@ Generates hierarchical XML structure from folder data. Converts the flat list of
 **Namespace**: `DoenaSoft.FolderList`
 
 ```csharp
-internal static class XmlCreator
+internal sealed class XmlCreator
 {
-    internal static RootItem Create(
+    internal RootItem Create(
         DirectoryInfo folder,
         List<FolderData> folderDatas);
 }
@@ -152,21 +312,26 @@ internal static class XmlCreator
 
 ### Cleaner
 
-Optimizes the XML structure by removing redundant entries and cleaning up paths.
+Optimizes the XML structure by removing redundant entries and applying optional path transformations.
 
 **Namespace**: `DoenaSoft.FolderList`
 
 ```csharp
-internal static class Cleaner
+internal sealed class Cleaner
 {
-    internal static void Clean(RootItem rootItem);
+    internal Cleaner(IPathTransformer pathTransformer = null);
+
+    internal void Clean(RootItem rootItem);
 }
 ```
+
+**Constructor Parameters**:
+- `pathTransformer`: (Optional) Custom path transformer for specialized path handling
 
 **Key Behavior**:
 - Removes empty folder arrays
 - Clears FullPath for parent nodes (only leaves retain full paths)
-- Special handling for network paths starting with "N:\" (converts to forward slashes)
+- Applies custom path transformations via `IPathTransformer` if provided
 
 ---
 
@@ -177,20 +342,25 @@ Handles XML serialization to file system with automatic backup management.
 **Namespace**: `DoenaSoft.FolderList`
 
 ```csharp
-internal static class Serializer
+internal sealed class Serializer
 {
-    internal static (string oldFileName, string outFileName) Serialize(
+    internal Serializer(IBackupStrategy backupStrategy = null);
+
+    internal (string oldFileName, string outFileName) Serialize(
         DirectoryInfo folder,
         string outputFileName,
         RootItem rootItem);
 }
 ```
 
+**Constructor Parameters**:
+- `backupStrategy`: (Optional) Custom backup strategy for managing backup files
+
 **Key Behavior**:
-- Creates backup chain: .old.old ← .old ← current
+- Applies backup strategy via injected `IBackupStrategy` if provided
 - Uses XSLT transformation for XML output
 - Sets Archive attribute on output file
-- Returns paths to both the backup and new file
+- Returns paths to both the backup (if any) and new file
 
 ---
 
@@ -213,15 +383,149 @@ internal sealed class FolderData : IEquatable<FolderData>, IComparable<FolderDat
 - Implements equality based on full path
 - Sorts by path, then by newest timestamp (descending)
 
+---
+
+### IPathTransformer
+
+Public interface for implementing custom path transformation logic.
+
+**Namespace**: `DoenaSoft.FolderList`
+
+```csharp
+public interface IPathTransformer
+{
+    string Transform(string fullPath);
+}
+```
+
+**Purpose**: Allows callers to inject custom path transformation logic during the cleaning phase, enabling specialized handling of paths (e.g., network drives, UNC paths, cloud storage paths).
+
+**Implementation Example**:
+
+```csharp
+// Example: Network path transformer for N:\ drives
+public sealed class NetworkPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        if (string.IsNullOrEmpty(fullPath))
+        {
+            return fullPath;
+        }
+
+        if (fullPath.StartsWith(@"N:\", StringComparison.InvariantCultureIgnoreCase))
+        {
+            var cleanedPath = fullPath.Substring(3).Replace("\\", "/").TrimEnd('/') + "/";
+            return cleanedPath;
+        }
+
+        return fullPath;
+    }
+}
+```
+
+This is an example implementation - create your own in your application based on your specific needs.
+
+---
+
+### IFolderConsolidator
+
+Public interface for implementing custom folder consolidation logic.
+
+**Namespace**: `DoenaSoft.FolderList`
+
+```csharp
+public interface IFolderConsolidator
+{
+    bool ShouldConsolidate(DirectoryInfo folder);
+}
+```
+
+**Purpose**: Allows callers to inject custom logic to determine which folders should be consolidated with their parent folders, enabling specialized handling of multi-disc, multi-part, or other organizational structures.
+
+**Implementation Example**:
+
+```csharp
+// Example: Multi-disc folder consolidator
+public sealed class MultiDiscFolderConsolidator : IFolderConsolidator
+{
+    public bool ShouldConsolidate(DirectoryInfo folder)
+    {
+        if (folder == null)
+            return false;
+
+        var name = folder.Name;
+        return name.StartsWith("cd", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("disc", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("part", StringComparison.OrdinalIgnoreCase);
+    }
+}
+```
+
+This is an example implementation - create your own in your application based on your specific organizational needs.
+
+---
+
+### IBackupStrategy
+
+Public interface for implementing custom backup file management strategies.
+
+**Namespace**: `DoenaSoft.FolderList`
+
+```csharp
+public interface IBackupStrategy
+{
+    string CreateBackups(string outputFilePath);
+}
+```
+
+**Purpose**: Allows callers to inject custom backup file management logic before writing new XML output files. Enables flexible backup strategies such as versioned backups, timestamped backups, or multi-level backup chains.
+
+**Implementation Example**:
+
+```csharp
+// Example: Two-level backup strategy (.old and .old.old)
+public sealed class TwoLevelBackupStrategy : IBackupStrategy
+{
+    public string CreateBackups(string outputFilePath)
+    {
+        if (string.IsNullOrEmpty(outputFilePath))
+            return null;
+
+        var oldOldFileName = $"{outputFilePath}.old.old";
+        var oldFileName = $"{outputFilePath}.old";
+
+        // Move .old to .old.old
+        if (File.Exists(oldFileName))
+        {
+            if (File.Exists(oldOldFileName))
+                File.Delete(oldOldFileName);
+            File.Move(oldFileName, oldOldFileName);
+        }
+
+        // Move current to .old
+        if (File.Exists(outputFilePath))
+        {
+            File.Move(outputFilePath, oldFileName);
+            return oldFileName;
+        }
+
+        return null;
+    }
+}
+```
+
+This is an example implementation - create your own based on your backup requirements (e.g., timestamped backups, unlimited versions, cloud storage backups).
+
 ## Special Folder Handling
 
-The library recognizes and consolidates folders with special naming patterns:
+The library provides flexible folder consolidation through the `IFolderConsolidator` interface. Common use cases include:
 
 - **cd*** (e.g., cd1, cd2, cdA, cdB)
 - **part*** (e.g., part1, part2)
 - **disc*** (e.g., disc1, disc2)
 
-These folders are automatically grouped under their parent folder to avoid duplicate entries in the output.
+By implementing `IFolderConsolidator`, you can define which folders should be grouped under their parent folder to avoid duplicate entries in the output. If no consolidator is provided, all folders are treated independently.
 
 ## XML Output Format
 
@@ -297,6 +601,71 @@ Creator.Scan(folder, "*.*", "output.xml");
 
 // Specific file types
 Creator.Scan(folder, "*.jpg,*.png,*.gif,*.bmp", "images.xml");
+```
+
+### Path Transformation
+
+Use `IPathTransformer` when you need to customize how paths appear in the XML output:
+
+```csharp
+// Example: Network path transformer (implement in your application)
+public class NetworkPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        if (string.IsNullOrEmpty(fullPath))
+            return fullPath;
+
+        if (fullPath.StartsWith(@"N:\", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return fullPath.Substring(3).Replace("\\", "/").TrimEnd('/') + "/";
+        }
+
+        return fullPath;
+    }
+}
+
+var transformer = new NetworkPathTransformer();
+Creator.Scan(folder, "*.mp4", "output.xml", transformer);
+
+// Custom transformer for UNC paths
+public class UncPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        if (fullPath.StartsWith(@"\\server\share\"))
+        {
+            return fullPath.Replace(@"\\server\share\", "").Replace("\\", "/");
+        }
+        return fullPath;
+    }
+}
+
+// Custom transformer for multiple scenarios
+public class MultiPathTransformer : IPathTransformer
+{
+    public string Transform(string fullPath)
+    {
+        // Remove sensitive server names
+        fullPath = fullPath.Replace(@"\\internal-server\", "/");
+
+        // Normalize cloud storage paths
+        if (fullPath.Contains("OneDrive"))
+        {
+            fullPath = fullPath.Replace("OneDrive - Company", "OneDrive");
+        }
+
+        return fullPath;
+    }
+}
+```
+
+**When to use path transformers**:
+- Converting absolute paths to relative paths
+- Normalizing network or UNC paths for portability
+- Removing sensitive information from paths
+- Converting paths for cross-platform compatibility
+- Standardizing cloud storage path formats
 ```
 
 ## Dependencies

@@ -1,6 +1,4 @@
-﻿using DoenaSoft.FolderList;
-
-namespace TestProject1;
+﻿namespace DoenaSoft.FolderList.Tests;
 
 [TestClass]
 public sealed class FolderInfoTests
@@ -8,7 +6,16 @@ public sealed class FolderInfoTests
     [TestMethod]
     public void TwoParts()
     {
-        var rootFolder = CreateFolder(null, null, @"C:\", out var _, out var albumFolders);
+        var tempFolder = new DirectoryInfo(Path.GetTempPath());
+
+        var testFolder = Path.Combine(tempFolder.FullName, "FolderInfoTests");
+
+        if (Directory.Exists(testFolder))
+        {
+            Directory.Delete(testFolder, true);
+        }
+
+        var rootFolder = CreateFolder(tempFolder, null, "FolderInfoTests", out var _, out var albumFolders);
 
         var albumFolder = CreateFolder(rootFolder, albumFolders, "Album", out var _, out var discFolders);
 
@@ -20,7 +27,9 @@ public sealed class FolderInfoTests
 
         AddFile(disc2Folder, disc2Files, "Title B.mp3", new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc));
 
-        var folderInfos = FolderGetter.Get(rootFolder, "*.mp3");
+        var folderConsolidator = new MultiDiscFolderConsolidator();
+        var folderGetter = new FolderGetter(folderConsolidator);
+        var folderInfos = folderGetter.Get(rootFolder, "*.mp3");
 
         Assert.IsNotNull(folderInfos);
         Assert.HasCount(1, folderInfos);
@@ -42,11 +51,13 @@ public sealed class FolderInfoTests
             ? @$"{parent.FullName}\{name}"
             : name;
 
-        files = [];
-
-        subFolders = [];
-
         var folder = new DirectoryInfo(fullName);
+
+        folder.Create();
+
+        files = [.. folder.GetFiles("*.*", SearchOption.TopDirectoryOnly)];
+
+        subFolders = [.. folder.GetDirectories("*.*", SearchOption.TopDirectoryOnly)];
 
         siblings?.Add(folder);
 
@@ -58,8 +69,12 @@ public sealed class FolderInfoTests
         , string name
         , DateTime writeTime)
     {
-        var titleBFile = new FileInfo(@$"{folder.FullName}\{name}");
+        var file = new FileInfo(@$"{folder.FullName}\{name}");
 
-        files.Add(titleBFile);
+        file.Create();
+
+        file.LastWriteTimeUtc = writeTime;
+
+        files.Add(file);
     }
 }

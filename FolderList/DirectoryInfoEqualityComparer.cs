@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides equality comparison for <see cref="DirectoryInfo"/> instances based on their full path.
 /// </summary>
-internal sealed class FolderInfoEqualityComparer : IEqualityComparer<DirectoryInfo>
+internal sealed class DirectoryInfoEqualityComparer : IEqualityComparer<DirectoryInfo>
 {
     /// <summary>
     /// Determines whether two <see cref="DirectoryInfo"/> instances are equal based on their full path.
