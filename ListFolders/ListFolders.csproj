@@ -16,4 +16,14 @@
 	  <PackageReference Include="DoenaSoft.FolderList" Version="1.0.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="copy.cmd">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="call copy.cmd bin\$(Configuration)\$(TargetFramework)" />
+	</Target>
+
 </Project>
