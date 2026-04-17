@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using DoenaSoft.ToolBox.Generics;
+﻿using DoenaSoft.ToolBox.Generics;
 
 namespace DoenaSoft.FolderList.Xml;
 
@@ -15,16 +14,7 @@ public static class Reader
     /// <returns>the top-level items</returns>
     public static SubItem[] Read(string fileName)
     {
-        using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-        using var xmlReader = new XmlTextReader(stream);
-
-        var settings = new XmlReaderSettings()
-        {
-            DtdProcessing = DtdProcessing.Parse,
-        };
-
-        var doc = XmlSerializer<FolderDocument>.Deserialize(xmlReader);
+        var doc = XsltSerializer<FolderDocument>.Deserialize(fileName);
 
         return doc.RootItem;
     }
