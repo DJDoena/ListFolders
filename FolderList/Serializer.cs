@@ -36,7 +36,7 @@ internal sealed class Serializer
 
         var oldFileName = _backupStrategy?.CreateBackups(outFileName);
 
-        Writer.Write(rootItem, outFileName);
+        MetaWriter.Write(rootItem, outFileName);
 
         File.SetAttributes(outputFile.FullName, FileAttributes.Archive);
 
