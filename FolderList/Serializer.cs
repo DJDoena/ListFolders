@@ -36,7 +36,7 @@ internal sealed class Serializer
 
         var oldFileName = _backupStrategy?.CreateBackups(outFileName);
 
-        (new XsltSerializer<RootItem>(new RootItemXsltSerializerDataProvider())).Serialize(outputFile.FullName, rootItem);
+        Writer.Write(rootItem, outFileName);
 
         File.SetAttributes(outputFile.FullName, FileAttributes.Archive);
 

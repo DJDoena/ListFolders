@@ -1,12 +1,14 @@
-﻿using DoenaSoft.FolderList;
-using DoenaSoft.ListFolders;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
+using DoenaSoft.FolderList;
+using DoenaSoft.ListFolders;
 
 Console.WriteLine($"ListFolders v{Assembly.GetExecutingAssembly().GetName().Version}");
 
 try
 {
+    //var test = DoenaSoft.FolderList.Xml.Reader.Read(@"N:\Drive3\AudioBooks\AudioBooks.xml");
+
     if (args?.Length == 3)
     {
         var rootFolder = (new DirectoryInfo(args[0]));

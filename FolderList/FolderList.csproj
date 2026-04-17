@@ -32,11 +32,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DoenaSoft.FolderList.Xml" Version="1.0.5" />
+		<InternalsVisibleTo Include="FolderList.Tests" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="FolderList.Tests" />
+	  <ProjectReference Include="..\FolderList.Xml\FolderList.Xml.csproj" />
 	</ItemGroup>
 
 </Project>

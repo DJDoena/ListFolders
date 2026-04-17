@@ -14,6 +14,7 @@ public partial class Document
     [XmlAnyAttribute]
     public XmlAttribute[] AnyAttributes;
 }
+
 public partial class RootItem
 {
     /// <summary />
