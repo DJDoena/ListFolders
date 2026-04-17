@@ -5,7 +5,6 @@
 		<RootNamespace>DoenaSoft.ListFolders</RootNamespace>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
-		<Configurations>Debug</Configurations>
 		<ApplicationIcon>djdsoft.ico</ApplicationIcon>
 		<ImplicitUsings>true</ImplicitUsings>
 		<Nullable>disable</Nullable>

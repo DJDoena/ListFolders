@@ -1,4 +1,7 @@
 <Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+  </Configurations>
   <Project Path="FolderList.Xml/FolderList.Xml.csproj" />
   <Project Path="FolderList/FolderList.csproj" Id="d78d1b80-e4da-4528-8542-a0336d577d9a" />
   <Folder Name="/Solution Items/">
