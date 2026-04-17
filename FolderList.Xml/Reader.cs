@@ -24,7 +24,7 @@ public static class Reader
             DtdProcessing = DtdProcessing.Parse,
         };
 
-        var doc = XmlSerializer<Document>.Deserialize(xmlReader);
+        var doc = XmlSerializer<FolderDocument>.Deserialize(xmlReader);
 
         return doc.RootItem;
     }

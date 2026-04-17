@@ -2,10 +2,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
 	<!-- xsd.exe RootItem.xsd /c /l:cs /f /n:DoenaSoft.FolderList.Xml -->
 
-	<xs:element name="doc" type="Document" />
+	<xs:element name="doc" type="FolderDocument" />
 	<xs:element name="RootItem" type="RootItem" />
 
-	<xs:complexType name="Document">
+	<xs:complexType name="FolderDocument">
 		<xs:sequence>
 			<xs:element name="RootItem" type="RootItem" minOccurs="1" maxOccurs="1" />
 		</xs:sequence>

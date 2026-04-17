@@ -21,7 +21,7 @@ namespace DoenaSoft.FolderList.Xml {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute("doc", Namespace="", IsNullable=false)]
-    public partial class Document {
+    public partial class FolderDocument {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Item", IsNullable=false)]
