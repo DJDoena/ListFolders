@@ -24,7 +24,7 @@ internal sealed class NetworkPathTransformer : IPathTransformer
 
         if (fullPath.StartsWith(@"N:\", StringComparison.InvariantCultureIgnoreCase))
         {
-            var cleanedPath = fullPath.Substring(3).Replace("\\", "/").TrimEnd('/') + "/";
+            var cleanedPath = fullPath.Substring(2).Replace("\\", "/").TrimEnd('/') + "/";
 
             return cleanedPath;
         }
