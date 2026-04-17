@@ -2,7 +2,7 @@
 
 namespace DoenaSoft.FolderList.Xml;
 
-public static class Writer
+public static class MetaWriter
 {
     public static void Write(RootItem rootItem, string fileName)
     {
