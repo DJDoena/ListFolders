@@ -22,8 +22,8 @@
 		<Company>Doena Soft.</Company>
 		<Authors>DJ Doena</Authors>
 		<Copyright>Copyright (c) Doena Soft. 2025 - 2026</Copyright>
-		<Version>1.0.2</Version>
-		<FileVersion>1.0.2</FileVersion>
+		<Version>1.0.3</Version>
+		<FileVersion>1.0.3</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -36,7 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\FolderList.Xml\FolderList.Xml.csproj" />
+	  <PackageReference Include="DoenaSoft.FolderList.Xml" Version="1.0.6" />
 	</ItemGroup>
 
 </Project>
