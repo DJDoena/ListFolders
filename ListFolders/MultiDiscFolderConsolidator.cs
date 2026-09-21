@@ -25,8 +25,10 @@ internal sealed class MultiDiscFolderConsolidator : IFolderConsolidator
 
         var name = folder.Name;
 
-        return name.StartsWith("cd", StringComparison.OrdinalIgnoreCase)
-            || name.StartsWith("disc", StringComparison.OrdinalIgnoreCase)
-            || name.StartsWith("part", StringComparison.OrdinalIgnoreCase);
+        var shouldConsolidate = name.StartsWith("cd ", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("disc ", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("part ", StringComparison.OrdinalIgnoreCase);
+
+        return shouldConsolidate;
     }
 }
