@@ -33,7 +33,9 @@ internal sealed class XmlCreator
         , FolderData folderData
         , int fullNameLength)
     {
-        var line = folderData.Folder.FullName.Substring(fullNameLength + 1);
+        var line = folderData.Folder.FullName.Length > fullNameLength
+             ? folderData.Folder.FullName.Substring(fullNameLength + 1)
+             : string.Empty;
 
         var rootFolder = folderData.Folder.FullName.Substring(0, fullNameLength);
 

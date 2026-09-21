@@ -31,7 +31,7 @@ internal sealed class FolderGetter
             .SelectMany(p => folder.GetFiles(p, SearchOption.AllDirectories))
             .ToList();
 
-        var folderInfos = Get(folder, files);
+        var folderInfos = this.Get(folder, files);
 
         return folderInfos;
     }
@@ -39,15 +39,16 @@ internal sealed class FolderGetter
     private List<FolderData> Get(DirectoryInfo folder
         , IEnumerable<FileInfo> files)
     {
+
         var folders = files
             .Select(f => f.Directory)
             .Where(f => f.FullName != folder.FullName)
             .Distinct(new DirectoryInfoEqualityComparer());
 
         var folderInfos = folders
-            .Select(f => GetFolderInfo(f, files))
-            .OrderBy(f => f)
+            .Select(f => this.GetFolderInfo(f, files))
             .Distinct()
+            .OrderBy(f => f.Folder.FullName)
             .ToList();
 
         return folderInfos;
@@ -58,14 +59,11 @@ internal sealed class FolderGetter
     {
         var folderFiles = GetFolderFiles(folder, allFiles);
 
-        if (_folderConsolidator?.ShouldConsolidate(folder) == true)
-        {
-            return new FolderData(folder.Parent, folderFiles);
-        }
-        else
-        {
-            return new FolderData(folder, folderFiles);
-        }
+        var folderData = _folderConsolidator?.ShouldConsolidate(folder) == true
+            ? new FolderData(folder.Parent, folderFiles)
+            : new FolderData(folder, folderFiles);
+
+        return folderData;
     }
 
     private static IEnumerable<FileInfo> GetFolderFiles(DirectoryInfo folder
